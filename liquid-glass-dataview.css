@@ -1,0 +1,146 @@
+/* ============================================================
+   Liquid Glass · Dataview tables (Obsidian)
+   File: liquid-glass-dataview.css
+   Path: <vault>/.obsidian/snippets/
+
+   Enable with:
+     A) YAML in the note ->  cssclasses: [liquid-table]
+     B) HTML             ->  <div class="glass-dv"> ... </div>
+   Works in light and dark mode (.theme-light / .theme-dark).
+   ============================================================ */
+
+/* ---------- Tokens ---------- */
+body {
+  --lgt-radius: 28px;   /* card corner radius */
+  --lgt-blur: 16px;     /* backdrop blur */
+  --lgt-sat: 165%;      /* backdrop saturation */
+}
+
+.theme-dark {
+  --lgt-tint-hi: rgba(255, 255, 255, .14);
+  --lgt-tint-lo: rgba(255, 255, 255, .04);
+  --lgt-border: rgba(255, 255, 255, .22);
+  --lgt-spec: rgba(255, 255, 255, .55);
+  --lgt-edge-low: rgba(255, 255, 255, .10);
+  --lgt-glow: rgba(255, 255, 255, .06);
+  --lgt-sheen: rgba(255, 255, 255, .20);
+  --lgt-shadow: rgba(0, 0, 0, .50);
+  --lgt-shadow-soft: rgba(0, 0, 0, .30);
+  --lgt-line: rgba(255, 255, 255, .38);
+  --lgt-line-soft: rgba(255, 255, 255, .10);
+  --lgt-hover: rgba(255, 255, 255, .09);
+  --lgt-text-shadow: 0 1px 3px rgba(0, 0, 0, .45);
+  --lgt-fallback: rgba(32, 34, 44, .88);
+}
+
+.theme-light {
+  --lgt-tint-hi: rgba(255, 255, 255, .62);
+  --lgt-tint-lo: rgba(255, 255, 255, .26);
+  --lgt-border: rgba(255, 255, 255, .75);
+  --lgt-spec: rgba(255, 255, 255, .95);
+  --lgt-edge-low: rgba(0, 0, 0, .06);
+  --lgt-glow: rgba(255, 255, 255, .35);
+  --lgt-sheen: rgba(255, 255, 255, .65);
+  --lgt-shadow: rgba(31, 38, 80, .20);
+  --lgt-shadow-soft: rgba(31, 38, 80, .12);
+  --lgt-line: rgba(0, 0, 0, .18);
+  --lgt-line-soft: rgba(0, 0, 0, .07);
+  --lgt-hover: rgba(255, 255, 255, .45);
+  --lgt-text-shadow: none;
+  --lgt-fallback: rgba(246, 247, 251, .92);
+}
+
+/* ---------- Glass card ---------- */
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) {
+  position: relative;
+  margin: 1.2em 0;
+  padding: 8px 12px 12px;
+  border: 1px solid var(--lgt-border);
+  border-radius: var(--lgt-radius);
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: linear-gradient(135deg, var(--lgt-tint-hi), var(--lgt-tint-lo));
+  -webkit-backdrop-filter: blur(var(--lgt-blur)) saturate(var(--lgt-sat));
+  backdrop-filter: blur(var(--lgt-blur)) saturate(var(--lgt-sat));
+  box-shadow:
+    inset 0 1.5px 0 var(--lgt-spec),
+    inset 0 -1px 0 var(--lgt-edge-low),
+    inset 0 0 24px var(--lgt-glow),
+    0 14px 34px var(--lgt-shadow),
+    0 2px 6px var(--lgt-shadow-soft);
+}
+
+/* Specular sheen (decorative, does not intercept clicks) */
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background:
+    radial-gradient(120% 70% at 12% -10%, var(--lgt-sheen), transparent 55%),
+    linear-gradient(180deg, transparent 70%, var(--lgt-glow));
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Content sits above the sheen */
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Table (structure preserved) ---------- */
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview {
+  width: 100%;
+  margin: 0;
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: transparent;
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview :is(thead, tbody, tr, th, td) {
+  background: transparent;
+  border: 0;
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview th {
+  padding: 10px 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 1px solid var(--lgt-line);
+  text-shadow: var(--lgt-text-shadow);
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview td {
+  padding: 10px 12px;
+  vertical-align: top;
+  text-shadow: var(--lgt-text-shadow);
+  transition: background-color .2s ease;
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview tbody tr + tr td {
+  border-top: 1px solid var(--lgt-line-soft);
+}
+
+/* Row hover with rounded ends */
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview tbody tr:hover td {
+  background: var(--lgt-hover);
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview tbody tr:hover td:first-child {
+  border-radius: 14px 0 0 14px;
+}
+
+:is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) table.dataview tbody tr:hover td:last-child {
+  border-radius: 0 14px 14px 0;
+}
+
+/* ---------- Accessibility: reduced transparency ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  :is(.liquid-table, .glass-dv) :is(.block-language-dataview, .block-language-dataviewjs) {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--lgt-fallback);
+  }
+}
